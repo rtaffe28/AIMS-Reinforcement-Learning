@@ -26,11 +26,16 @@ class BanditPolicy(Policy):
         Parameters:
             _ (int): Unused. Just here to conform to interface, will always be None for bandits.
         """
-        ### TODO ###
-        ### 1. Implement the epsilon-greedy policy for selecting an action.
-        ###    With probability epsilon, select a random action.
-        ###    Otherwise, select any action with the highest estimated Q value.
-        raise NotImplementedError
+        rand = np.random.rand()
+        if rand <= self.epsilon:
+            return np.random.randint(len(self.Q))
+        else:
+            max_val = max(self.Q)
+            best_actions = []
+            for i in range(len(self.Q)):
+                if self.Q[i] == max_val:
+                    best_actions.append(i)
+            return np.random.choice(best_actions)
 
     @override
     def action_prob(self, _: int = None, action: int = None) -> float:
